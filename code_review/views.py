@@ -1,6 +1,7 @@
 # Create your views here.
 from django.http import HttpResponse
-from code_review.models import Review
+from django.shortcuts import render_to_response
+from code_review.models import Review, User
 
 
 def add_review(request):
@@ -16,3 +17,7 @@ def add_review(request):
                               start_offset=start_offset, end_offset=end_offset)
         review.save()
     return HttpResponse("")
+
+def all_authors(request):
+    users = User.objects.all()
+    return render_to_response("all_authors.html", {"users":users})

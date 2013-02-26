@@ -9,3 +9,8 @@ class Review(models.Model):
     file_path = models.CharField(max_length=50)
     start_offset = models.IntegerField()
     end_offset = models.IntegerField()
+
+class User(models.Model):
+    name = models.CharField(max_length=50)
+    to_review = models.IntegerField()   # commit_no
+    reviewed = models.IntegerField()    # commit_no
