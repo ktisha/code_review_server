@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
 {% for author in users %}
-    <user name="{{ author.name }}"/>
+  <user name="{{ author.name }}">{{ author.name }}</user>
 {% endfor %}
+</body>
+</html>
