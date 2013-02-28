@@ -21,3 +21,11 @@ def add_review(request):
 def all_authors(request):
     users = User.objects.all()
     return render_to_response("all_authors.html", {"users":users})
+
+def to_review(request):
+    author = request.GET['author']
+    user = User.objects.get(name=author)
+    to_review = user.to_review.all()
+    for x in to_review:
+      print x
+    return render_to_response("to_review.html", {"user":user, "to_review": to_review})

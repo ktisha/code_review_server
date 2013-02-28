@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+{% for commit in to_review %}
+  <user name="{{ commit.commit_no}}">{{ commit.commit_no }}</user><br/>
+{% endfor %}
+</body>
+</html>

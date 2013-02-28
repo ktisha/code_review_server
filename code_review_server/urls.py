@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from code_review.views import add_review, all_authors
+from code_review.views import add_review, all_authors, to_review
 
 admin.autodiscover()
 
@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     # add review to database
     (r'^add_review/', add_review),
     (r'^all_authors/', all_authors),
+    (r'^to_review/', to_review),
 )

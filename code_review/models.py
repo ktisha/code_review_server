@@ -12,5 +12,8 @@ class Review(models.Model):
 
 class User(models.Model):
     name = models.CharField(max_length=50)
-    to_review = models.IntegerField()   # commit_no
+    to_review = models.ManyToManyField("Commit")   # commit_no
     reviewed = models.IntegerField()    # commit_no
+
+class Commit(models.Model):
+  commit_no = models.IntegerField()    #commit_no
