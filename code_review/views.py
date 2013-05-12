@@ -27,5 +27,5 @@ def to_review(request):
     user = User.objects.get(name=author)
     to_review = user.to_review.all()
     for x in to_review:
-      print x
+      print (x)
     return render_to_response("to_review.html", {"user":user, "to_review": to_review})

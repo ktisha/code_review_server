@@ -1,9 +1,9 @@
-from models import User, Commit
+from code_review.models import User, Commit
 
 __author__ = 'ktisha'
 
 from django.contrib import admin
-from models import Review
+from code_review.models import Review
 
 class AuthorAdmin(admin.ModelAdmin):
     pass
