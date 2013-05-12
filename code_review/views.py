@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from code_review.models import Review, User
-
+import json
 
 def add_review(request):
     if request.method == "POST":
@@ -26,6 +26,8 @@ def to_review(request):
     author = request.GET['author']
     user = User.objects.get(name=author)
     to_review = user.to_review.all()
-    for x in to_review:
-      print (x)
-    return render_to_response("to_review.html", {"user":user, "to_review": to_review})
+    response = {}
+    for commit in to_review:
+        response["to_review"] = commit.commit_no
+    # return render_to_response("to_review.html", {"user":user, "to_review": to_review})
+    return HttpResponse(json.dumps({"to_review": response}), mimetype='application/json')
