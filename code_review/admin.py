@@ -1,4 +1,4 @@
-from code_review.models import User, Commit
+from code_review.models import MyUser, Commit
 
 __author__ = 'ktisha'
 
@@ -9,5 +9,5 @@ class AuthorAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Review, AuthorAdmin)
-admin.site.register(User, AuthorAdmin)
+admin.site.register(MyUser, AuthorAdmin)
 admin.site.register(Commit, AuthorAdmin)

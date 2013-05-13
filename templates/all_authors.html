@@ -1,5 +1,5 @@
 <xml>
 {% for author in users %}
-  <user name="{{ author.name }}">{{ author.name }}</user>
+  <user name="{{ author.user.username }}">{{ author.user.username }}</user>
 {% endfor %}
 </xml>

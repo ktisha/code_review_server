@@ -1,7 +1,6 @@
-# Create your views here.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from code_review.models import Review, User
+from code_review.models import Review, MyUser
 import json
 
 def add_review(request):
@@ -19,15 +18,38 @@ def add_review(request):
     return HttpResponse("")
 
 def all_authors(request):
-    users = User.objects.all()
+    users = MyUser.objects.all()
     return render_to_response("all_authors.html", {"users":users})
 
+from django.contrib.auth import authenticate, login
+
+def my_login(request):
+    username = request.GET['userName']
+    password = request.GET['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            response = {"success": "true"}
+        else:
+            response = {"error": "User is inactive"}
+    else:
+        response = {"error": "Authentification failed"}
+    return HttpResponse(json.dumps(response),
+                        content_type='application/json',
+                        mimetype='application/json')
+
+
 def to_review(request):
-    author = request.GET['author']
-    user = User.objects.get(name=author)
+    user = MyUser.objects.get(user=request.user)
     to_review = user.to_review.all()
-    response = {}
+    response = []
     for commit in to_review:
-        response["to_review"] = commit.commit_no
-    # return render_to_response("to_review.html", {"user":user, "to_review": to_review})
-    return HttpResponse(json.dumps({"to_review": response}), mimetype='application/json')
+        data = {}
+        data["name"]= "NAME"
+        data["permaId"]= {"id" : "ID"}
+        data["author"]= {"userName" : "AUTHOR"}
+        data["state"]= "STATE"
+        data["createDate"]= "2013-02-22T13:08:48.609+0300"
+        response.append(data)
+    return HttpResponse(json.dumps({"reviewData": response}), mimetype='application/json')
