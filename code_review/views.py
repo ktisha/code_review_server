@@ -1,3 +1,4 @@
+import base64
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from code_review.models import Review, MyUser
@@ -21,18 +22,28 @@ def all_authors(request):
     users = MyUser.objects.all()
     return render_to_response("all_authors.html", {"users":users})
 
-from django.contrib.auth import authenticate, login
+
+# def my_login(request):
+#     username = request.GET['userName']
+#     password = request.GET['password']
+#     user = authenticate(username=username, password=password)
+#     if user is not None:
+#         if user.is_active:
+#             login(request, user)
+#             response = {"token": request.session.session_key}
+#         else:
+#             response = {"error": "User is inactive"}
+#     else:
+#         response = {"error": "Authentification failed"}
+#     return HttpResponse(json.dumps(response),
+#                         content_type='application/json',
+#                         mimetype='application/json')
 
 def my_login(request):
     username = request.GET['userName']
     password = request.GET['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            response = {"success": "true"}
-        else:
-            response = {"error": "User is inactive"}
+    if request.user.username == username:
+        response = {"token": request.session.session_key}
     else:
         response = {"error": "Authentification failed"}
     return HttpResponse(json.dumps(response),
@@ -44,12 +55,12 @@ def to_review(request):
     user = MyUser.objects.get(user=request.user)
     to_review = user.to_review.all()
     response = []
-    for commit in to_review:
+    for review in to_review:
         data = {}
-        data["name"]= "NAME"
-        data["permaId"]= {"id" : "ID"}
-        data["author"]= {"userName" : "AUTHOR"}
-        data["state"]= "STATE"
-        data["createDate"]= "2013-02-22T13:08:48.609+0300"
+        data["name"]= review.description
+        data["permaId"]= {"id":review.perm_id}
+        data["author"]= {"userName" : review.author.user.username}
+        data["state"]= review.state
+        data["createDate"]= review.date.strftime("%Y-%m-%d")
         response.append(data)
     return HttpResponse(json.dumps({"reviewData": response}), mimetype='application/json')

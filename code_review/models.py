@@ -10,9 +10,17 @@ class Review(models.Model):
     end_offset = models.IntegerField()
 
 class MyUser(models.Model):
-    to_review = models.ManyToManyField("Commit")   # commit_no
-    reviewed = models.IntegerField()    # commit_no
+    # to_review = models.ForeignKey("ReviewItem", related_name="author")
+    reviewed = models.IntegerField()
     user = models.OneToOneField(User)
 
 class Commit(models.Model):
-  commit_no = models.IntegerField()    #commit_no
+  commit_no = models.IntegerField()
+
+class ReviewItem(models.Model):
+  author = models.ForeignKey("MyUser", related_name="to_review")
+  commit = models.OneToOneField(Commit)
+  description = models.CharField(max_length=1000)
+  perm_id = models.CharField(max_length=50)
+  state = models.CharField(max_length=50)
+  date = models.DateField()
